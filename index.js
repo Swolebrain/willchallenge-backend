@@ -5,6 +5,7 @@ const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+const bp = require('body-parser');
 
 // Authentication middleware. 
 const checkJwt = jwt({
@@ -24,12 +25,10 @@ const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
-const db = require('./models/connection');
-const {ChallengeEvidence, Challenge} = require('./models/Challenge.js')(db);
-
 const allowedOrigins = [
   'localhost',
 ];
+
 app.use((req,res,next) => {
   let i = allowedOrigins.indexOf(req.hostname);
   if (allowedOrigins[i] === -1) return next(); 
@@ -40,15 +39,20 @@ app.use((req,res,next) => {
 });
 //apparently this just checks the validity of the jwt
 app.use(checkJwt);
+app.use(bp.json());
+
 
 //if i wanted to check a specific scope and add a middleware to that, i would do this:
 //const checkScopes = jwtAuthz([ 'read:messages' ]);
 //then use that variable checkScopes as a middleware
 
+
+const {ChallengeEvidence, Challenge, connection} = require('./models/connection.js');
+
 app.get('/', (req, res)=> res.end('hello world'));
 
 //challenge controllers:
-require('./controllers/Challenge.js')(app, db, ChallengeEvidence, Challenge);
+require('./controllers/Challenge.js')(app, connection, ChallengeEvidence, Challenge);
 
 
 
