@@ -3,6 +3,9 @@ const {
   ChallengeEvidenceEntrySchema,
   ChallengeSchema
 } = require('./Challenge.js');
+const {
+  UserSchema
+} = require('./User');
 
 let connectionString = 'mongodb://localhost/willchallenge';
 
@@ -15,9 +18,11 @@ const ChallengeEvidence = connection
 
 const Challenge = connection.model('Challenge', ChallengeSchema);
 
+const User = connection.model('User', UserSchema);
 
 module.exports = {
   ChallengeEvidence,
   Challenge,
+  User,
   connection
 };
