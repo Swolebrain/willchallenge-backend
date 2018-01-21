@@ -60,7 +60,9 @@ app.use(async function(req, res, next) {
   if (req.method.toLowerCase() === 'options') return next();
   console.log(req.method, 'REQUEST TO', req.url);
   
-  const decodedToken = jwtDecode(req.headers['x-id-token']);
+  let decodedToken;
+  if (req.headers['x-id-token'])
+    decodedToken = jwtDecode(req.headers['x-id-token']);
 
   //user is known and is on a known device that has the cookie
   if (req.cookies.knownuser) return next();
