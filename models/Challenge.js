@@ -12,10 +12,12 @@ const ChallengeEvidenceEntrySchema = new mongoose.Schema({
 
 const ChallengeSchema = new mongoose.Schema({
   owner: {type: String, required: true},
+  ownerName: String,
+  ownerPicture: String,
   description: {type: String, required: true},
   subscribers: [
     {
-      userId: String,
+      user: {type: mongoose.Schema.ObjectId, ref: 'User'},
       challengeEvidenceEntries: [ { type: mongoose.Schema.ObjectId, ref: 'ChallengeEvidenceEntry' } ]
     }
   ]

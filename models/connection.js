@@ -13,12 +13,12 @@ const connection = mongoose.createConnection(
   connectionString,
   {promiseLibrary: global.Promise});
 
+const User = connection.model('User', UserSchema);
+
 const ChallengeEvidence = connection
   .model('ChallengeEvidenceEntry', ChallengeEvidenceEntrySchema);
 
 const Challenge = connection.model('Challenge', ChallengeSchema);
-
-const User = connection.model('User', UserSchema);
 
 module.exports = {
   ChallengeEvidence,
